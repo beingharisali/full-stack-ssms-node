@@ -1,9 +1,14 @@
 const mongoose = require("mongoose");
 const userSchema = mongoose.Schema({
-    fullName:{
+    firstName:{
         type: String,
         required: true,
         minLength: 3,
+    },
+    lastName:{
+        type: String,
+        required:true,
+        minLength:3,
     },
     email: {
         type: String,
@@ -20,7 +25,9 @@ const userSchema = mongoose.Schema({
       enum: ["admin", "agent", "client"],
       default: "client",
     },
-});
+}, 
+// {timestamps:true}
+);
 
 const userModel = mongoose.model("user", userSchema);
 module.exports = userModel;
