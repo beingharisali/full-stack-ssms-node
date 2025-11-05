@@ -1,13 +1,16 @@
 require('dotenv').config()
 const port = process.env.PORT;
+const JWT_SECRET = process.env.JWT_SECRET;
 const express = require('express')
 const app = express()
 const cors = require("cors");
 const connecDB = require("./database/connect")
 const userRoutes = require("./routes/user");
+// const { authenticateJWT, authorizeRoles } = require('./middleware/auth');
+
 const mongo_uri = "mongodb://localhost:27017/ssms-application"
 connecDB();
-app.use(cors());
+app.use(cors()); 
 app.use(express.json());
 app.use("/api/v1", userRoutes);
 
