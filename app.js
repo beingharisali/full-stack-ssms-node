@@ -6,7 +6,7 @@ const app = express()
 const cors = require("cors");
 const connecDB = require("./database/connect")
 const userRoutes = require("./routes/user");
-// const { authenticateJWT, authorizeRoles } = require('./middleware/auth');
+
 
 const mongo_uri = "mongodb://localhost:27017/ssms-application"
 connecDB();
