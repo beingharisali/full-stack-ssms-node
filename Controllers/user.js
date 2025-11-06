@@ -67,6 +67,7 @@ const jwt = require("jsonwebtoken");
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
+console.log("Just testing")
 
 //  REGISTER
 const register = async (req, res) => {
