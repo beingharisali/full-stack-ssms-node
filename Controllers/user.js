@@ -84,8 +84,14 @@ const register = async (req, res) => {
         msg: "Email already exists, please use another email",
       });
     }
+    
+    if (password.length <8 ){
+  return res.status (400).json ({
+    sucess :false,msg: "password must be 8 alphabet  "
+  });
+ }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, 8);
 
     const user = await userModel.create({
       firstName,
@@ -128,7 +134,11 @@ const login = async (req, res) => {
     if (!email || !password) {
       return res.status(400).json({ success: false, msg: "Email and password are required" });
     }
-
+ if (password.length <8 ){
+  return res.status (400).json ({
+    sucess :false,msg: "password must be 8 character "
+  });
+ }
     const user = await userModel.findOne({ email });
     if (!user) {
       return res.status(404).json({ success: false, msg: "Email not found" });
