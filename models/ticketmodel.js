@@ -18,6 +18,7 @@ const ticketSchema =new mongoose.Schema({
     },
     priority:{
         type:String,
+
         required:[true,"please fill priority fields"]
     },
     status:{
@@ -25,12 +26,12 @@ const ticketSchema =new mongoose.Schema({
         required:[true,"please fill status fields"]
     },
     createdBy:{
-        type:mongoose.Schema.Types.user,
+        type:mongoose.Schema.Types.ObjectId,
         ref:"user",
         required:[true,"please fill createdBy fields"]
     },
     assignedTo:{
-        type:mongoose.Schema.Types.Agent,
+        type:mongoose.Schema.Types.ObjectId,
         ref:"Agent",
         required:[true,"please fill assignedTo fields"]
     }

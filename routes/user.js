@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { register, login } = require("../Controllers/user");
+const { register, login } = require("../controller/user");
 const { authenticateJWT, authorizeRoles } = require("../middleware/auth");
 
 // Public routes

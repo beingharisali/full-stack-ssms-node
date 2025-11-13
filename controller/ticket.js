@@ -1,4 +1,4 @@
-const ticketModel = require('../model/ticket')
+const ticketModel = require('../models/ticketmodel.js')
 const createticket = async(req, res)=>{
     const { title, desc, price,priority,category,status,createdBy,assignedTo} = req.body
     const ticket = await ticketModel.create({

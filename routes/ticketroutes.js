@@ -9,10 +9,10 @@ const {
 	gettickets,
 } = require("../controller/ticket");
 
-router.get("/tickets", getticket);
+router.get("/tickets", gettickets);
 router.post("/create-ticket", createticket);
 router.delete("/delete-ticket/:id", deleteticket);
 router.patch("/update-ticket/:id", editticket);
-router.get("/single-ticket/:id", gettickets);
+router.get("/single-ticket/:id", getticket);
 
 module.exports = router;
