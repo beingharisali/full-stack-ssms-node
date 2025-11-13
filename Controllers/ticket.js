@@ -1,54 +1,45 @@
-const agentModel = require('../model/agent')
-
-const createAgent = async (req, res) => {
-  const { name, email, phone } = req.body
-  const agent = await agentModel.create({ name, email, phone })
-  res.status(201).json({
-    success: true,
-    agent,
-  })
+const ticketModel = require('../model/ticket')
+const createticket = async(req, res)=>{
+    const { title, desc, price,priority,category,status,createdBy,assignedTo} = req.body
+    const ticket = await ticketModel.create({
+        title, desc, price,priority,category,status,createdBy,assignedTo
+    })
+    res.status(201).json({
+        success:true,
+        ticket
+    })
 }
-
-
-const getAgents = async (req, res) => {
-  const agents = await agentModel.find({})
-  res.status(200).json({
-    success: true,
-    agents,
-  })
+const gettickets = async(req, res)=>{
+    const tickets = await ticketModel.find({})
+    res.status(200).json({
+        success:true,
+        tickets
+    })
 }
-
-
-const getAgent = async (req, res) => {
-  const id = req.params.id
-  const agent = await agentModel.findById(id)
-  res.status(200).json({
-    success: true,
-    agent,
-  })
+const getticket = async(req,res)=>{
+    const id = req.params.id
+    const ticket = await ticketModel.findById(id)
+    res.status(200).json({
+        success:true,
+        ticket
+    })
 }
-
-
-const editAgent = async (req, res) => {
-  const id = req.params.id
-  const body = req.body
-  const updateAgent = await agentModel.findByIdAndUpdate(id, body, { new: true })
-  res.status(200).json({
-    success: true,
-    msg: 'Agent updated successfully',
-    updateAgent,
-  })
+const deleteticket = async(req,res)=>{
+    const id = req.params.id
+    const ticket = await ticketModel.findByIdAndDelete(id)
+    res.status(200).json({
+        success:true,
+        ticket
+    })
 }
-
-
-const deleteAgent = async (req, res) => {
-  const id = req.params.id
-  const agent = await agentModel.findByIdAndDelete(id)
-  res.status(200).json({
-    success: true,
-    msg: 'Agent deleted successfully',
-    agent,
-  })
+const editticket = async(req, res)=>{
+    const id = req.params.id;
+    const body = req.body;
+    const updateticket = await ticketModel.findByIdAndUpdate(id, body, {new:true})
+    res.status(200).json({
+        success:true,
+        msg:"ticket updated successfully",
+        updateticket
+    })
 }
-
-module.exports = { createAgent, getAgents, getAgent, editAgent, deleteAgent }
+module.exports = {createticket, getticket, gettickets, deleteticket, editticket}
