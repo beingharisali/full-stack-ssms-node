@@ -9,10 +9,10 @@ const {
 	getAgent,
 } = require("../controller/agent");
 
-router.get("/tickets", getAgents);
-router.post("/create-ticket", createAgent);
-router.delete("/delete-ticket/:id", deleteAgent);
-router.patch("/update-ticket/:id", editAgent);
-router.get("/single-ticket/:id", getAgent);
+router.get("/agent", getAgents);
+router.post("/create-agent", createAgent);
+router.delete("/delete-agent/:id", deleteAgent);
+router.patch("/update-agent/:id", editAgent);
+router.get("/single-agent/:id", getAgent);
 
 module.exports = router;
