@@ -4,9 +4,9 @@ const JWT_SECRET = process.env.JWT_SECRET;
 const express = require('express')
 const app = express()
 const cors = require("cors");
-const connecDB = require("./database/connect")
-const userRoutes = require("./routes/user");
-const ticketRoutes = require('./routes/ticketroutes');
+const connecDB = require("./database/connect.js")
+const userRoutes = require("./routes/user.js");
+const ticketRoutes = require('./routes/ticketroutes.js');
 
 
 const mongo_uri = "mongodb://localhost:27017/ssms-application"
