@@ -3,9 +3,11 @@ const router = express.Router();
 const { register, login } = require("../controller/user");
 const { authenticateJWT, authorizeRoles } = require("../middleware/auth");
 
+
 // Public routes
 router.post("/register", register);
 router.post("/login", login);
+
 
 // // Protected route (any logged-in user)
 // router.get("/client", authenticateJWT, (req, res) => {

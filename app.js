@@ -14,7 +14,7 @@ connecDB();
 app.use(cors()); 
 app.use(express.json());
 app.use("/api/v1", userRoutes);
-app.use('/api/v1', ticketRoutes);
+app.use("/api/v2", ticketRoutes);
 
 app.get("/", (req, res) => {
 	res.status(200).json({

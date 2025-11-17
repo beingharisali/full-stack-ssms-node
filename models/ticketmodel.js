@@ -26,13 +26,13 @@ const ticketSchema =new mongoose.Schema({
         required:[true,"please fill status fields"]
     },
     createdBy:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"user",
+        type:String,
+       
         required:[true,"please fill createdBy fields"]
     },
     assignedTo:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"Agent",
+        type:String,
+        
         required:[true,"please fill assignedTo fields"]
     }
 })
