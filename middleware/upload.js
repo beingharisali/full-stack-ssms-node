@@ -21,7 +21,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({
 	storage,
-	limits: { fileSize: 10 * 1024 * 1024 }, // 10MB
+	limits: { fileSize: 10 * 1024 * 1024 },
 	fileFilter: (_req, file, cb) => {
 		if (!file.mimetype) {
 			return cb(new Error("Invalid file type"));
@@ -34,4 +34,3 @@ module.exports = {
 	upload,
 	uploadsDir,
 };
-
