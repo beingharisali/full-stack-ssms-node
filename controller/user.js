@@ -133,10 +133,31 @@ const getProfile = async (req, res) => {
 		}
 		res.status(200).json({ success: true, user: buildAuthPayload(user) });
 	} catch (error) {
-		res
-			.status(500)
-			.json({ success: false, msg: "Failed to load profile", error: error.message });
+		res.status(500).json({
+			success: false,
+			msg: "Failed to load profile",
+			error: error.message,
+		});
 	}
 };
-
-module.exports = { register, login, getProfile };
+const getAllUser = async (req, res) => {
+	try {
+		const user = await userModel.find({});
+		res.status(200).json({
+			success: true,
+			user: {
+				firstName: user.firstName,
+				lastName: user.lastName,
+				email: user.email,
+				role: user.role,
+			},
+		});
+	} catch (error) {
+		res.status(500).json({
+			success: false,
+			msg: "Failed to get user",
+			error: error,
+		});
+	}
+};
+module.exports = { register, login, getProfile, getAllUser };
