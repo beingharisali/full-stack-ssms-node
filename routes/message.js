@@ -8,7 +8,7 @@ const {
 const { authenticateJWT } = require("../middleware/auth");
 
 router.post("/messages", authenticateJWT, sendMessage);
-router.get("/tickets/:ticketId/messages", authenticateJWT, getMessages);
+router.get("/messages/:ticketId", authenticateJWT, getMessages);
 router.get("/messages/unread", authenticateJWT, getUnreadCount);
 
 module.exports = router;

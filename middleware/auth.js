@@ -10,6 +10,7 @@ const authenticateJWT = (req, res, next) => {
 
   
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    console.log("Auth failed - no token:", authHeader);
     return res.status(401).json({ success: false, msg: "No token provided" });
   }
 
@@ -20,6 +21,7 @@ const authenticateJWT = (req, res, next) => {
     req.user = decoded;
     next();
   } catch (err) {
+    console.log("JWT verify failed:", err.message);
     return res.status(403).json({ success: false, msg: "Invalid or expired token" });
   }
 };

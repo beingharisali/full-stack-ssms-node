@@ -14,7 +14,14 @@ const router = express.Router();
 router.post(
 	"/tickets",
 	authenticateJWT,
-	upload.array("attachments", 5),
+	// Only use multer when the request is multipart/form-data (i.e. file uploads)
+	(req, res, next) => {
+		const ct = req.headers["content-type"] || "";
+		if (ct.startsWith("multipart/form-data")) {
+			return upload.array("attachments", 5)(req, res, next);
+		}
+		return next();
+	},
 	createTicket
 );
 router.get("/tickets", authenticateJWT, getAllTickets);
@@ -22,7 +29,13 @@ router.get("/tickets/:id", authenticateJWT, getSingleTicket);
 router.patch(
 	"/tickets/:id",
 	authenticateJWT,
-	upload.array("attachments", 5),
+	(req, res, next) => {
+		const ct = req.headers["content-type"] || "";
+		if (ct.startsWith("multipart/form-data")) {
+			return upload.array("attachments", 5)(req, res, next);
+		}
+		return next();
+	},
 	updateTicket
 );
 router.patch(
