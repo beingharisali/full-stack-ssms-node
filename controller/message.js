@@ -136,26 +136,22 @@ const getUnreadCount = async (req, res) => {
 		const unreadCounts = await TicketMessage.aggregate([
 			{ $match: { ticketId: { $in: ticketIds } } },
 			{
+				$addFields: {
+					isRead: {
+						$in: [new mongoose.Types.ObjectId(userId), "$readBy.userId"]
+					}
+				}
+			},
+			{
 				$group: {
 					_id: "$ticketId",
 					unread: {
 						$sum: {
-							$cond: [
-								{
-									$not: {
-										$in: [
-											new mongoose.Types.ObjectId(userId),
-											"$readBy.userId",
-										],
-									},
-								},
-								1,
-								0,
-							],
-						},
-					},
-				},
-			},
+							$cond: ["$isRead", 0, 1]
+						}
+					}
+				}
+			}
 		]);
 
 		const result = {};
