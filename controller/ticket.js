@@ -3,7 +3,7 @@ const { getIO } = require("../services/socket");
 
 const createTicket = async (req, res) => {
 	try {
-		const { title, description, priority, category, status } = req.body;
+		const { title, description, priority, category, status, assignedTo } = req.body;
 		const createdBy = req.user?.id || req.user?._id;
 
 		if (!createdBy) {
@@ -37,7 +37,7 @@ const createTicket = async (req, res) => {
 			status: status || "open",
 			attachments: attachmentsToSave,
 			createdBy,
-			assignedTo: null,
+			assignedTo: assignedTo || null,
 		});
 
 		const populatedTicket = await model
@@ -114,7 +114,7 @@ const getSingleTicket = async (req, res) => {
 		const canAccess =
 			user.role === "admin" ||
 			ticket.createdBy._id.toString() === user.id ||
-			ticket.assignedTo?._id?.toString() === user.id;
+			(ticket.assignedTo && ticket.assignedTo._id && ticket.assignedTo._id.toString() === user.id);
 
 		if (!canAccess) {
 			return res.status(403).json({

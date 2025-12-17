@@ -17,8 +17,35 @@ const messageRoutes = require("./routes/message.js");
 connecDB();
 
 app.use(cors({}));
-app.use(express.json());
+// Capture raw body for debugging JSON parse issues
+app.use(
+	express.json({
+		limit: "10mb",
+		verify: (req, _res, buf, encoding) => {
+			try {
+				req.rawBody = buf && buf.toString(encoding || "utf8");
+			} catch (e) {
+				req.rawBody = undefined;
+			}
+		},
+	})
+);
+app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use(express.static(path.join(__dirname, "uploads")));
+
+// Error handling middleware for JSON parsing
+app.use((err, req, res, next) => {
+	if (err instanceof SyntaxError && err.status === 400 && "body" in err) {
+		// Log raw body for debugging
+		console.error("Invalid JSON received for", req.method, req.path);
+		if (req.rawBody) console.error("Raw body:", req.rawBody);
+		return res.status(400).json({
+			success: false,
+			msg: "Invalid JSON format in request body",
+		});
+	}
+	next(err);
+});
 
 app.use("/api/v1", userRoutes);
 app.use("/api/v1", ticketRoutes);

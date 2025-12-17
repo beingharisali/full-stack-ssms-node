@@ -17,6 +17,14 @@ const buildAuthPayload = (user) => ({
 //  REGISTER
 const register = async (req, res) => {
 	try {
+		// Validate request body exists
+		if (!req.body || typeof req.body !== 'object') {
+			return res.status(400).json({
+				success: false,
+				msg: "Invalid request body"
+			});
+		}
+
 		const { firstName, lastName, email, password, role = "client" } = req.body;
 
 		if (!firstName || !lastName || !email || !password) {
@@ -142,21 +150,22 @@ const getProfile = async (req, res) => {
 };
 const getAllUser = async (req, res) => {
 	try {
-		const user = await userModel.find({});
+		const users = await userModel.find({}).select("-password");
 		res.status(200).json({
 			success: true,
-			user: {
+			users: users.map(user => ({
+				_id: user._id,
 				firstName: user.firstName,
 				lastName: user.lastName,
 				email: user.email,
 				role: user.role,
-			},
+			})),
 		});
 	} catch (error) {
 		res.status(500).json({
 			success: false,
-			msg: "Failed to get user",
-			error: error,
+			msg: "Failed to get users",
+			error: error.message,
 		});
 	}
 };
