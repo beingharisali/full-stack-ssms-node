@@ -150,7 +150,11 @@ const updateTicket = async (req, res) => {
 			});
 		}
 
-		if (user.role !== "admin" && ticket.createdBy.toString() !== user.id) {
+		const canUpdate = user.role === "admin" || 
+			ticket.createdBy.toString() === user.id ||
+			(user.role === "agent" && ticket.assignedTo && ticket.assignedTo.toString() === user.id);
+
+		if (!canUpdate) {
 			return res.status(403).json({
 				success: false,
 				msg: "You don't have permission to update this ticket",
@@ -211,21 +215,22 @@ const deleteTicket = async (req, res) => {
 		const { id } = req.params;
 		const user = req.user;
 
-		if (user.role !== "admin") {
-			return res.status(403).json({
-				success: false,
-				msg: "Only admins can delete tickets",
-			});
-		}
-
-		const ticket = await model.findByIdAndDelete(id);
-
+		const ticket = await model.findById(id);
 		if (!ticket) {
 			return res.status(404).json({
 				success: false,
 				msg: "Ticket not found",
 			});
 		}
+
+		if (user.role !== "admin" && ticket.createdBy.toString() !== user.id) {
+			return res.status(403).json({
+				success: false,
+				msg: "You don't have permission to delete this ticket",
+			});
+		}
+
+		await model.findByIdAndDelete(id);
 
 		const io = getIO();
 		if (io) {

@@ -169,4 +169,50 @@ const getAllUser = async (req, res) => {
 		});
 	}
 };
-module.exports = { register, login, getProfile, getAllUser };
+const getUserById = async (req, res) => {
+	try {
+		const { id } = req.params;
+		const user = await userModel.findById(id).select("-password");
+		if (!user) {
+			return res.status(404).json({ success: false, msg: "User not found" });
+		}
+		res.status(200).json({ success: true, user });
+	} catch (error) {
+		res.status(500).json({ success: false, msg: "Failed to get user", error: error.message });
+	}
+};
+
+const deleteUser = async (req, res) => {
+	try {
+		const { id } = req.params;
+		if (req.user.role !== "admin") {
+			return res.status(403).json({ success: false, msg: "Access denied" });
+		}
+		const user = await userModel.findByIdAndDelete(id);
+		if (!user) {
+			return res.status(404).json({ success: false, msg: "User not found" });
+		}
+		res.status(200).json({ success: true, msg: "User deleted successfully" });
+	} catch (error) {
+		res.status(500).json({ success: false, msg: "Failed to delete user", error: error.message });
+	}
+};
+
+const updateUser = async (req, res) => {
+	try {
+		const { id } = req.params;
+		const { firstName, lastName, email, role } = req.body;
+		if (req.user.role !== "admin") {
+			return res.status(403).json({ success: false, msg: "Access denied" });
+		}
+		const user = await userModel.findByIdAndUpdate(id, { firstName, lastName, email, role }, { new: true }).select("-password");
+		if (!user) {
+			return res.status(404).json({ success: false, msg: "User not found" });
+		}
+		res.status(200).json({ success: true, user });
+	} catch (error) {
+		res.status(500).json({ success: false, msg: "Failed to update user", error: error.message });
+	}
+};
+
+module.exports = { register, login, getProfile, getAllUser, getUserById, deleteUser, updateUser };

@@ -47,7 +47,6 @@ router.patch(
 router.delete(
 	"/tickets/:id",
 	authenticateJWT,
-	authorizeRoles("admin"),
 	deleteTicket
 );
 
